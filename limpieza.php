@@ -145,7 +145,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                        <button class="btn btn-danger" onclick="deleteRow(<?php echo $row['id']; ?>)">Borrar</button>
+                                                                <button class="btn btn-danger" onclick="deleteRow(<?php echo $row['id']; ?>)">Borrar</button>
                                                     </td>
 												</tr>
 											<?php } ?>
@@ -178,71 +178,4 @@
 		<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 		<script src="assets/demo/datatables-demo.js"></script>
 		<!-- ... (código HTML anterior) ... -->
-        <script>
-    function deleteRow(id) {
-        // This function will handle the deletion of the row from the client-side
-        if (confirm("¿Estás seguro de que quieres eliminar este registro?")) {
-            // If the user confirms the deletion, send an AJAX request to delete the row
-            $.ajax({
-                type: "POST",
-                url: "eliminar_registro.php",
-                data: { id: id },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status === "success") {
-                        // If the deletion was successful, remove the row from the table
-                        const table = document.getElementById("dataTable");
-                        const row = document.getElementById("row_" + id);
-                        table.deleteRow(row.rowIndex);
-                    } else {
-                        // If there was an error in the deletion, display an error message
-                        alert("Error: " + response.message);
-                    }
-                },
-                error: function () {
-                    alert("Error en la solicitud AJAX");
-                }
-            });
-        }
-    }
-</script>
-<script>
-function openModal(recordId) {
-  // Asigna el ID del registro al elemento en el modal que muestra el ID
-  document.getElementById('modalRecordId').textContent = recordId;
-  // Abre el modal utilizando el método de Bootstrap
-  $('#myModal').modal('show');
-}
-
-function saveChanges() {
-  // Aquí puedes implementar la lógica para guardar los cambios realizados en el modal
-  // Por ejemplo, podrías usar AJAX para enviar los datos al servidor y actualizar el registro en la base de datos
-  // Luego, cierra el modal
-  $('#myModal').modal('hide');
-}
-function moveData() {
-        if (confirm("¿Estás seguro de que deseas mover los datos a reclutamiento_baja?")) {
-            // Realiza una petición AJAX para mover los datos
-            $.ajax({
-                type: "POST",
-                url: "mover_datos.php",
-                dataType: "json",
-                success: function (response) {
-                    if (response.status === "success") {
-                        alert("Datos movidos correctamente.");
-                        // Actualiza la página para reflejar los cambios en la tabla
-                        location.reload();
-                    } else {
-                        alert("Error al mover los datos: " + response.message);
-                    }
-                },
-                error: function () {
-                    alert("Error en la solicitud AJAX");
-                }
-            });
-        }
-    }
-</script>
-
-</html>
  

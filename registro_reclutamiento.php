@@ -20,11 +20,14 @@
 			<div id="layoutSidenav_content">
 				<main>
 					<div class="container-fluid"><br>
-						<h1 class="mt-0">Módulo de registro</h1>
+						<h1 class="mt-0">Registro de candidatos</h1>
 						<ol class="breadcrumb mb-4">
 							<li class="breadcrumb-item"><a href="principal.php">Dashboard</a></li>
-							<li class="breadcrumb-item active">Módulo de reclutamiento</li>
+							<li class="breadcrumb-item active">Vigilancia</li>
 						</ol>
+						<!-- <div class="card mb-4">
+							<div class="card-body">En este apartado, encontrarás la información de los empleados del área de vigilancia.</div>
+						</div> -->
 						<div class="card mb-4">
                             <div class="card">
                                 <div class="card-body">
@@ -119,20 +122,8 @@
                                 </div>
                             </div>
 						</div>
-					</div>
-                    <div class="container-fluid"><br>
-						<h1 class="mt-0">Candidatos</h1>
-						<ol class="breadcrumb mb-4">
-							<li class="breadcrumb-item"><a href="principal.php">Dashboard</a></li>
-							<li class="breadcrumb-item active">Módulo de reclutamiento</li>
-						</ol>
-						<div class="card mb-4">
-							<div class="card-body">En este apartado, encontrarás la fuente de información sobre los futuros reclutamientos.</div>
-						</div>
-						<div class="card mb-4">
-						</div>
-						<div class="card mb-4">
-							<div class="card-header"><i class="fas fa-table mr-1"></i>Posibles reclutamientos</div>
+						<d  iv class="card mb-4">
+							<div class="card-header"><i class="fas fa-table mr-1"></i>Vigilantes</div>
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -142,17 +133,17 @@
 												<th>Nombre</th>
 												<th>Primer apellido</th>
 												<th>Segundo apellido</th>
-												<th>Teléfono</th>
+                                                <th>Teléfono</th>
+                                                <th>Dirección</th>
                                                 <th>Edad</th>
-												<th>Dirección</th>
-                                                <th>Vehículo</th>
+                                                <th>Moto</th>
                                                 <th>Último empleo</th>
-                                                <th>Antigüedad</th>
+                                                <th>Antiguedad</th>
                                                 <th>Motivo de salida</th>
                                                 <th>Puesto aplicado</th>
                                                 <th>Estatus</th>
                                                 <th>Comentarios</th>
-												<th>Acciones</th>
+                                                <th>Acciones</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -163,9 +154,9 @@
 													<td><?php echo $row['nombres']; ?></td>
 													<td><?php echo $row['primer_apellido']; ?></td>
 													<td><?php echo $row['segundo_apellido']; ?></td>
-													<td><?php echo $row['telefono']; ?></td>
+                                                    <td><?php echo $row['telefono']; ?></td>
+                                                    <td><?php echo $row['direccion']; ?></td>
                                                     <td><?php echo $row['edad']; ?></td>
-													<td><?php echo $row['direccion']; ?></td>
                                                     <td><?php echo $row['moto']; ?></td>
                                                     <td><?php echo $row['ultimo_empleo']; ?></td>
                                                     <td><?php echo $row['antiguedad']; ?></td>
@@ -173,8 +164,36 @@
                                                     <td><?php echo $row['puesto_aplicado']; ?></td>
                                                     <td><?php echo $row['estats']; ?></td>
                                                     <td><?php echo $row['comentarios']; ?></td>
-													<td>  <!-- Botón para borrar la fila -->
-                                <button class="btn btn-danger" onclick="deleteRow(<?php echo $row['id']; ?>)">Borrar</button></td>
+													<td>
+                                                    <button class="btn btn-primary" onclick="openModal(<?php echo json_encode($row['id']); ?>)">Editar</button>
+
+                                                                <div class="modal" id="myModal">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Editar Registro</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <!-- Contenido específico del modal -->
+                                                                            <!-- Puedes agregar campos de edición, formularios, etc. aquí -->
+                                                                            <!-- Por ejemplo: -->
+                                                                            <p>Estás editando el registro con ID: <span id="modalRecordId"></span></p>
+                                                                            <label for="nombres">Nombres</label>
+                                                                                <input class="form-control inputwidth" type="text" name="nombres" required>
+
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        <button class="btn btn-danger" onclick="deleteRow(<?php echo $row['id']; ?>)">Borrar</button>
+                                                        <button class="btn btn-success" onclick="moveToVigilantes(<?php echo $row['id']; ?>)">Mover a Vigilantes</button></td>
+                                                        <!-- <button class="btn btn-primary" id="transferButton">Mover Datos a Vigilantes</button> -->
+                                                    </td>
 												</tr>
 											<?php } ?>
 										</tbody>
@@ -197,34 +216,114 @@
 					</div>
 				</footer>
 			</div>
-		</div>
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 		<script src="js/scripts.js"></script>
 		<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
 		<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
 		<script src="assets/demo/datatables-demo.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	</body>
-</html>
+		<!-- ... (código HTML anterior) ... -->
+        <script>
+            function deleteRow(id) {
+                // This function will handle the deletion of the row from the client-side
+                if (confirm("¿Estás seguro de que quieres eliminar este registro?")) {
+                    // If the user confirms the deletion, send an AJAX request to delete the row
+                    $.ajax({
+                        type: "POST",
+                        url: "eliminar_vigilancia.php",
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.status === "success") {
+                                // If the deletion was successful, remove the row from the table
+                                const table = document.getElementById("dataTable");
+                                const row = document.getElementById("row_" + id);
+                                table.deleteRow(row.rowIndex);
+                            } else {
+                                // If there was an error in the deletion, display an error message
+                                alert("Error: " + response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("Error en la solicitud AJAX");
+                        }
+                    });
+                }
+            }
+        </script>
 <script>
-    function deleteRow(id) {
-        // This function will handle the deletion of the row from the client-side
-        if (confirm("¿Estás seguro de que quieres eliminar este registro?")) {
-            // If the user confirms the deletion, send an AJAX request to delete the row
+function openModal(recordId) {
+  // Asigna el ID del registro al elemento en el modal que muestra el ID
+  document.getElementById('modalRecordId').textContent = recordId;
+  // Abre el modal utilizando el método de Bootstrap
+  $('#myModal').modal('show');
+}
+
+function saveChanges() {
+  // Obtener el nuevo valor del campo "nombre" del input en el modal
+  var nuevoNombre = $('input[name="nombres"]').val();
+  
+  // Obtener el ID del registro que se está editando
+  var recordId = $('#modalRecordId').text();
+  
+  // Enviar una solicitud AJAX para actualizar el nombre en el servidor
+  $.ajax({
+    type: "POST",
+    url: "actualizar_nombre.php", // Cambia esto por la URL de tu script de actualización
+    data: { id: recordId, nuevoNombre: nuevoNombre },
+    success: function(response) {
+      // Aquí puedes actualizar la interfaz de usuario si la actualización fue exitosa
+      $('#myModal').modal('hide');
+      $('#row_' + recordId + ' td:nth-child(2)').text(nuevoNombre); // Actualizar el nombre en la tabla
+    },
+    error: function(error) {
+      // Manejar el error si la actualización falla
+      console.error("Error al actualizar: ", error);
+    }
+  });
+}
+() {
+        if (confirm("¿Estás seguro de que deseas mover los datos a reclutamiento_baja?")) {
+            // Realiza una petición AJAX para mover los datos
             $.ajax({
                 type: "POST",
-                url: "eliminar_registro.php",
+                url: "mover_datos.php",
+                dataType: "json",
+                success: function (response) {
+                    if (response.status === "success") {
+                        alert("Datos movidos correctamente.");
+                        // Actualiza la página para reflejar los cambios en la tabla
+                        location.reload();
+                    } else {
+                        alert("Error al mover los datos: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Error en la solicitud AJAX");
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+    function moveToVigilantes(id) {
+        // This function will handle the data transfer to the "vigilantes" table
+        if (confirm("¿Estás seguro de que quieres mover estos datos a la tabla de vigilantes?")) {
+            // Send an AJAX request to move the data
+            $.ajax({
+                type: "POST",
+                url: "move_to_vigilantes.php",
                 data: { id: id },
                 dataType: "json",
                 success: function (response) {
                     if (response.status === "success") {
-                        // If the deletion was successful, remove the row from the table
+                        // If the data transfer was successful, remove the row from the table
                         const table = document.getElementById("dataTable");
                         const row = document.getElementById("row_" + id);
                         table.deleteRow(row.rowIndex);
                     } else {
-                        // If there was an error in the deletion, display an error message
+                        // If there was an error in the data transfer, display an error message
                         alert("Error: " + response.message);
                     }
                 },
@@ -235,3 +334,6 @@
         }
     }
 </script>
+
+</html>
+ 
