@@ -1,3 +1,9 @@
+<?php
+	
+	$sql = "SELECT * FROM usuarios";
+	$resultado = $mysqli->query($sql);
+	
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,12 +22,12 @@
 			<a class="navbar-brand" href="principal.php"><img src="assets/img/svm_logo.png" class="logonav"alt=""> Grupo SVM</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
 			><!-- Navbar Search-->
 			<form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-				<div class="input-group">
+				<!-- <div class="input-group">
 					<input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
 					<div class="input-group-append">
 						<button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
 					</div>
-				</div>
+				</div> -->
 			</form>
 			<!-- Navbar-->
 			<ul class="navbar-nav ml-auto ml-md-0">
@@ -38,11 +44,11 @@
 				<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
 					<div class="sb-sidenav-menu">
 						<div class="nav">
-							<div class="sb-sidenav-menu-heading">Core</div>
+							<!-- <div class="sb-sidenav-menu-heading">Core</div>
 							<a class="nav-link" href="principal.php"
 							><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
 								Dashboard</a
-							>
+							> -->
 							<div class="sb-sidenav-menu-heading">Módulos de registro</div>
                             <a class="nav-link" href="registro_reclutamiento.php">
 								<div class="sb-nav-link-icon">
@@ -74,7 +80,9 @@
 					</div>
 					<div class="sb-sidenav-footer">
 						<div class="small">Sesión iniciada como:</div>
-						Usuario
+						<?php while($row = $resultado->fetch_assoc()) { ?>
+						<?php echo $row['usuario']; ?></td>
+						<?php } ?>
 					</div>
 				</nav>
 			</div>

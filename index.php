@@ -26,7 +26,7 @@
 				$_SESSION['nombre'] = $row['nombre'];
 				$_SESSION['tipo_usuario'] = $row['tipo_usuario'];
 				
-				header("Location: principal.php");
+				header("Location: registro_reclutamiento.php");
 				
 			} else {
 			
